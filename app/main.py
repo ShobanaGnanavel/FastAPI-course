@@ -7,6 +7,8 @@ import uvicorn
 import os
 from alembic.config import Config
 from alembic import command
+from sqlalchemy import text
+from .config import settings
 # models.Base.metadata.create_all(bind=engine)            since we are using alembic this line is not required
 app= FastAPI()
 
@@ -28,6 +30,17 @@ app.include_router(vote.router)
 @app.get("/")
 async def root():
     return{"message":"Welcome Shobana "}
+
+# Test DB connection endpoint
+@app.get("/test-db")
+def test_db():
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT NOW();"))
+            return {"db_time": str(result.fetchone()[0]),"username":settings.database_username}
+    except Exception as e:
+        return {"error": str(e)}
+
 
 @app.get("/run-migrations")
 def run_migrations():
