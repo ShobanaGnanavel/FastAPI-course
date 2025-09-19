@@ -20,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
-    op.create_table('usersTable',
+    op.create_table('users',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('email', sa.String(255), nullable=False),
                     sa.Column('password', sa.String(255), nullable=False),
@@ -34,5 +34,5 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_table('usersTable')
+    op.drop_table('users')
     pass
