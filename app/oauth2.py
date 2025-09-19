@@ -1,7 +1,7 @@
-import jwt
+# import jwt
 # from jwt.exceptions import InvalidTokenError
 from fastapi import Depends, FastAPI, HTTPException, status
-from jose import JWTError
+from jose import JWTError, jwt
 from datetime import datetime,timedelta
 from . import schemas,database,models
 from fastapi.security.oauth2 import OAuth2PasswordBearer
