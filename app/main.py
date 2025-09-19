@@ -41,7 +41,7 @@ def test_db():
     try:
         with engine.connect() as conn:
             result = conn.execute(text("SELECT * from usersTable;"))
-            return {"db_time": str(result.fetchone()[0]),"username":settings.database_username}
+            return {"db_time": str(result.fetchone()),"username":settings.database_username}
     except Exception as e:
         return {"error": str(e)}
 
@@ -59,7 +59,7 @@ def run_migrations():
 def insert():
     try:
         with engine.connect() as conn:
-            query = text("INSERT INTO your_table (email, password) VALUES ('shobana@gmail.com', 'pass@123')")
+            query = text("INSERT INTO usersTable (email, password) VALUES ('shobana@gmail.com', 'pass@123')")
             conn.execute(query)
             conn.commit()
     except Exception as e:
