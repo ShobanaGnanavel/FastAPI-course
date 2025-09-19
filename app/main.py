@@ -5,6 +5,8 @@ from .database import engine
 from .routers import post,user,auth,vote
 import uvicorn
 import os
+from alembic.config import Config
+from alembic import command
 # models.Base.metadata.create_all(bind=engine)            since we are using alembic this line is not required
 app= FastAPI()
 
@@ -27,6 +29,11 @@ app.include_router(vote.router)
 async def root():
     return{"message":"Welcome Shobana "}
 
+@app.get("/run-migrations")
+def migrate():
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+    return {"message": "Migrations completed!"}
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))  # Render sets this
