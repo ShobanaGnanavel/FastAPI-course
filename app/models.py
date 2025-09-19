@@ -4,7 +4,7 @@ from .database import Base
 from sqlalchemy.orm import relationship
 
 class Post(Base):
-    __tablename__ = "fastapi_posts"
+    __tablename__ = "postTable"
 
     id = Column(Integer,primary_key=True,nullable=False,index=True)
     title = Column(String(255),nullable=False)
@@ -16,7 +16,7 @@ class Post(Base):
     owner = relationship("Users") #have to call the python class
 
 class Users(Base):
-    __tablename__="users"
+    __tablename__="usersTable"
 
     id = Column(Integer,primary_key=True,nullable=False,index=True)
     email = Column(String(50),nullable=False,unique=True)
@@ -25,7 +25,7 @@ class Users(Base):
     phone_number = Column(String(255))
 
 class Vote(Base):
-    __tablename__="vote"
+    __tablename__="votesTable"
     
     user_id = Column(Integer,ForeignKey("users.id"),primary_key=True,nullable=False)
     post_id = Column(Integer,ForeignKey("fastapi_posts.id"),primary_key=True,nullable=False)

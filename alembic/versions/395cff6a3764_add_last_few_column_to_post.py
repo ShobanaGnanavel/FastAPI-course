@@ -29,6 +29,6 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_column('posts', 'published')
-    op.drop_column('posts', 'created_at')
+    op.drop_column('postTable', 'published')
+    op.drop_column('postTable', 'created_at')
     pass

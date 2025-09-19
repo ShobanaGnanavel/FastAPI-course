@@ -20,12 +20,12 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
-    op.create_table('posts',sa.Column('id',sa.Integer(),nullable=False,primary_key=True),
+    op.create_table('postTable',sa.Column('id',sa.Integer(),nullable=False,primary_key=True),
                     sa.Column('title',sa.String(255),nullable=False))
     pass
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_table('posts')
+    op.drop_table('postTable')
     pass
