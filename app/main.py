@@ -30,10 +30,13 @@ async def root():
     return{"message":"Welcome Shobana "}
 
 @app.get("/run-migrations")
-def migrate():
-    alembic_cfg = Config("alembic.ini")
-    command.upgrade(alembic_cfg, "head")
-    return {"message": "Migrations completed!"}
+def run_migrations():
+    try:
+        alembic_cfg = Config(os.path.join(os.getcwd(), "alembic.ini"))
+        command.upgrade(alembic_cfg, "head")
+        return {"message": "✅ Migrations completed successfully!"}
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))  # Render sets this
