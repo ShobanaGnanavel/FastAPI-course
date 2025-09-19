@@ -7,7 +7,7 @@ import uvicorn
 import os
 from alembic.config import Config
 from alembic import command
-from sqlalchemy import text
+from sqlalchemy import create_engine,text
 from .config import settings
 # models.Base.metadata.create_all(bind=engine)            since we are using alembic this line is not required
 app= FastAPI()
@@ -31,12 +31,16 @@ app.include_router(vote.router)
 async def root():
     return{"message":"Welcome Shobana "}
 
+DATABASE_URL = f"mysql+pymysql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}?ssl_ca={os.path.join(os.getcwd(), 'ca.pem')}"
+
+engine = create_engine(DATABASE_URL)
+
 # Test DB connection endpoint
 @app.get("/test-db")
 def test_db():
     try:
         with engine.connect() as conn:
-            result = conn.execute(text("SELECT NOW();"))
+            result = conn.execute(text("SELECT * from usersTable;"))
             return {"db_time": str(result.fetchone()[0]),"username":settings.database_username}
     except Exception as e:
         return {"error": str(e)}
@@ -48,6 +52,16 @@ def run_migrations():
         alembic_cfg = Config(os.path.join(os.getcwd(), "alembic.ini"))
         command.upgrade(alembic_cfg, "head")
         return {"message": "✅ Migrations completed successfully!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/insert")
+def insert():
+    try:
+        with engine.connect() as conn:
+            query = text("INSERT INTO your_table (email, password) VALUES ('shobana@gmail.com', 'pass@123')")
+            conn.execute(query)
+            conn.commit()
     except Exception as e:
         return {"error": str(e)}
 
