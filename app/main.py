@@ -29,7 +29,7 @@ async def root():
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))  # Render sets this
+    port = int(os.getenv("PORT", 8000))  # Render sets this
     uvicorn.run(app, host="0.0.0.0", port=port)
 
 
