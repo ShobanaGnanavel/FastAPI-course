@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import models
 from .database import engine
 from .routers import post,user,auth,vote
-
+import uvicorn
+import os
 # models.Base.metadata.create_all(bind=engine)            since we are using alembic this line is not required
 app= FastAPI()
 
@@ -27,7 +28,9 @@ async def root():
     return{"message":"Welcome Shobana "}
 
 
-
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 5000))  # Render sets this
+    uvicorn.run(app, host="0.0.0.0", port=port)
 
 
 
