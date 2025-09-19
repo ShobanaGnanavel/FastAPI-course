@@ -10,6 +10,11 @@ from alembic import command
 from sqlalchemy import create_engine,text
 from .config import settings
 # models.Base.metadata.create_all(bind=engine)            since we are using alembic this line is not required
+from fastapi import FastAPI,HTTPException,status,Response,Depends,APIRouter
+from app import models,schemas,utils
+from sqlalchemy.orm import Session
+from app.database import get_db
+
 app= FastAPI()
 
 origins = ["*"]
@@ -64,6 +69,15 @@ def insert():
             conn.commit()
     except Exception as e:
         return {"error": str(e)}
+
+
+@app.get("/{id}",response_model=schemas.UserCreateResponse)
+def get_user(id:int,db:Session=Depends(get_db)):
+    user = db.query(models.Users).filter(models.Users.id == id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail= f"the request with id: {id} was not found")
+    print(user)
+    return user
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))  # Render sets this

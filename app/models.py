@@ -11,9 +11,9 @@ class Post(Base):
     content = Column(String(255),nullable=False)
     published = Column(Boolean,server_default=text('1'))
     createat = Column(TIMESTAMP(timezone=True),nullable=False,server_default=text('now()'))
-    owner_id = Column(Integer,ForeignKey("users.id",ondelete="CASCADE"),nullable=False)
+    owner_id = Column(Integer,ForeignKey("usersTable.id",ondelete="CASCADE"),nullable=False)
 
-    owner = relationship("Users") #have to call the python class
+    owner = relationship("usersTable") #have to call the python class
 
 class Users(Base):
     __tablename__="usersTable"
@@ -27,5 +27,5 @@ class Users(Base):
 class Vote(Base):
     __tablename__="votesTable"
     
-    user_id = Column(Integer,ForeignKey("users.id"),primary_key=True,nullable=False)
-    post_id = Column(Integer,ForeignKey("fastapi_posts.id"),primary_key=True,nullable=False)
+    user_id = Column(Integer,ForeignKey("usersTable.id"),primary_key=True,nullable=False)
+    post_id = Column(Integer,ForeignKey("postTable.id"),primary_key=True,nullable=False)
